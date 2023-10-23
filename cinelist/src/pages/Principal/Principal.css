@@ -33,3 +33,8 @@
     cursor: not-allowed;
     background-color: #454558;
 }
+
+.erros {
+    text-align: center;
+    color: red;
+}

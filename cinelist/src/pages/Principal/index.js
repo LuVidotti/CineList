@@ -13,6 +13,7 @@ function Principal() {
     const [filmesBuscados, setFilmesBuscados] = useState([]);
     const [pagina, setPagina] = useState(1);
     const [busca, setBusca] = useState('');
+    const [erro, setErro] = useState(false);
 
     useEffect(() => {
         async function listaFilmes() {
@@ -31,8 +32,19 @@ function Principal() {
 
     useEffect(() => {
         async function buscarFilme() {
+            if(busca === '') {
+                setErro(false);
+                return;
+            }
+
             const resposta = await fetch(`https://api.themoviedb.org/3/search/movie?query=${busca}&page=${pagina}&api_key=${apiKey}&language=pt-BR`);
             const dados = await resposta.json();
+
+            if(dados.results.length === 0) {
+                setErro(true);
+            } else {
+                setErro(false);
+            }
 
             setFilmesBuscados(dados.results);
         }
@@ -45,24 +57,30 @@ function Principal() {
         <div className='principal'>
             <h1>Filmes Populares</h1>
             <Form digitar={aoDigitado} valor={busca}/>
-            <ul>
-                {busca === '' ? 
-                    filmes.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
-                        <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
-                    </Link>) 
-                : 
-                    filmesBuscados.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
-                        <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
-                    </Link>
-                    )
-                }
 
-                
-            </ul>
+            {erro === true ? 
+                <div className='erros'>
+                    Erro, nenhum filme encontrado
+                </div> 
+            
+            : 
+                <ul>
+                    {busca === '' ? 
+                        filmes.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
+                            <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
+                        </Link>) 
+                    : 
+                        filmesBuscados.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
+                            <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
+                        </Link>
+                        )
+                    }
+                </ul>
+            }
 
             <div className='paginacao'>
                 <button onClick={() => setPagina(pagina - 1)} disabled={pagina === 1}>Página Anterior</button>
-                <button onClick={() => setPagina(pagina + 1)}>Próxima Página</button>
+                <button onClick={() => setPagina(pagina + 1)} disabled={filmesBuscados.length < 20}>Próxima Página</button>
             </div>
         </div>
     )
