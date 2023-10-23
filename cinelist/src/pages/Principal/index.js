@@ -2,6 +2,7 @@ import Filme from '../../Components/Filme';
 import Form from '../../Components/Form';
 import './Principal.css';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 
 function Principal() {
@@ -20,16 +21,17 @@ function Principal() {
         }
 
         listaFilmes()
-    }, [pagina])
+    }, [pagina]);
 
-    console.log(filmes);
 
     return (
         <div className='principal'>
             <h1>Filmes Populares</h1>
-            <Form />
+            <Form enviarForm={enviarForm}/>
             <ul>
-                {filmes.map(filme => <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>)}
+                {filmes.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
+                    <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
+                </Link>)}
             </ul>
 
             <div className='paginacao'>
