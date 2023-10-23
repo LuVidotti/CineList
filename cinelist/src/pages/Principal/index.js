@@ -10,7 +10,9 @@ function Principal() {
     const urlImagem = `https://image.tmdb.org/t/p/w300`
     
     const [filmes, setFilmes] = useState([]);
+    const [filmesBuscados, setFilmesBuscados] = useState([]);
     const [pagina, setPagina] = useState(1);
+    const [busca, setBusca] = useState('');
 
     useEffect(() => {
         async function listaFilmes() {
@@ -23,15 +25,39 @@ function Principal() {
         listaFilmes()
     }, [pagina]);
 
+    function aoDigitado(e) {
+        setBusca(e.target.value);
+    }
+
+    useEffect(() => {
+        async function buscarFilme() {
+            const resposta = await fetch(`https://api.themoviedb.org/3/search/movie?query=${busca}&page=${pagina}&api_key=${apiKey}&language=pt-BR`);
+            const dados = await resposta.json();
+
+            setFilmesBuscados(dados.results);
+        }
+
+        buscarFilme()
+
+    }, [busca, pagina]);
 
     return (
         <div className='principal'>
             <h1>Filmes Populares</h1>
-            <Form enviarForm={enviarForm}/>
+            <Form digitar={aoDigitado} valor={busca}/>
             <ul>
-                {filmes.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
-                    <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
-                </Link>)}
+                {busca === '' ? 
+                    filmes.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
+                        <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
+                    </Link>) 
+                : 
+                    filmesBuscados.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
+                        <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
+                    </Link>
+                    )
+                }
+
+                
             </ul>
 
             <div className='paginacao'>
