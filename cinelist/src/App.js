@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Principal from './pages/Principal';
 import PagFilme from './pages/PagFilme';
+import Pag404 from './pages/Pag404';
 
 const LazyMovieList = React.lazy(() => import('../src/pages/Principal/index'));
 
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Principal />}/>
           <Route path='/movie/:id' element={<PagFilme />}/>
+          <Route path='*' element={<Pag404 />}/>
         </Routes>
       </BrowserRouter>
   );
