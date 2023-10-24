@@ -10,7 +10,6 @@ function Principal() {
     const urlImagem = `https://image.tmdb.org/t/p/w300`
     
     const [filmes, setFilmes] = useState([]);
-    const [filmesBuscados, setFilmesBuscados] = useState([]);
     const [pagina, setPagina] = useState(1);
     const [busca, setBusca] = useState('');
     const [erro, setErro] = useState(false);
@@ -46,7 +45,7 @@ function Principal() {
                 setErro(false);
             }
 
-            setFilmesBuscados(dados.results);
+            setFilmes(dados.results);
         }
 
         buscarFilme()
@@ -65,22 +64,16 @@ function Principal() {
             
             : 
                 <ul>
-                    {busca === '' ? 
-                        filmes.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
-                            <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
+                    {filmes.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
+                        <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
                         </Link>) 
-                    : 
-                        filmesBuscados.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
-                            <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
-                        </Link>
-                        )
                     }
                 </ul>
             }
 
             <div className='paginacao'>
                 <button onClick={() => setPagina(pagina - 1)} disabled={pagina === 1}>Página Anterior</button>
-                <button onClick={() => setPagina(pagina + 1)} disabled={filmesBuscados.length < 20}>Próxima Página</button>
+                <button onClick={() => setPagina(pagina + 1)} disabled={filmes.length < 20}>Próxima Página</button>
             </div>
         </div>
     )
