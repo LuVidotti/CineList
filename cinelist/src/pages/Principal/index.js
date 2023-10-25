@@ -1,11 +1,10 @@
-import Filme from '../../Components/Filme';
 import Form from '../../Components/Form';
 import './Principal.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 
-
 function Principal() {
+    const LazyFilme = lazy(() => import('../../Components/Filme'));
     const apiKey = '3acd99fa1b180cb1eb86ebe52bfdb5a6';
     const urlImagem = `https://image.tmdb.org/t/p/w300`
     
@@ -65,7 +64,9 @@ function Principal() {
             : 
                 <ul>
                     {filmes.map(filme => <Link to={`/movie/${filme.id}`} style={{textDecoration: 'none'}}>
-                        <Filme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
+                        <Suspense fallback={<div className='carregar'>carregando...</div>}>
+                            <LazyFilme titulo={filme.title} texto={filme.overview} imagem={`${urlImagem}${filme.poster_path}`} key={filme.id}/>
+                        </Suspense>
                         </Link>) 
                     }
                 </ul>

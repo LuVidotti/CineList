@@ -5,8 +5,6 @@ import Principal from './pages/Principal';
 import PagFilme from './pages/PagFilme';
 import Pag404 from './pages/Pag404';
 
-const LazyMovieList = React.lazy(() => import('../src/pages/Principal/index'));
-
 function App() {
   return (
       <BrowserRouter>
