@@ -11,7 +11,7 @@ function Principal() {
     const [filmes, setFilmes] = useState([]);
     const [pagina, setPagina] = useState(1);
     const [busca, setBusca] = useState('');
-    const [erro, setErro] = useState(false);
+    const [erro, setErro] = useState('');
 
     useEffect(() => {
         async function listaFilmes() {
@@ -31,7 +31,7 @@ function Principal() {
     useEffect(() => {
         async function buscarFilme() {
             if(busca === '') {
-                setErro(false);
+                setErro('');  //Se nao houver nada escrito no formulario, a pagina renderiza os filmes populares
                 return;
             }
 
@@ -39,9 +39,11 @@ function Principal() {
             const dados = await resposta.json();
 
             if(dados.results.length === 0) {
-                setErro(true);
+                setErro('Erro, nenhum filme encontrado');
+            } else if(busca.length < 3) {
+                setErro('Erro, a busca deve ter mais de 3 caracteres');
             } else {
-                setErro(false);
+                setErro('');
             }
 
             setFilmes(dados.results);
@@ -56,9 +58,9 @@ function Principal() {
             <h1>Filmes Populares</h1>
             <Form digitar={aoDigitado} valor={busca}/>
 
-            {erro === true ? 
+            {erro ? 
                 <div className='erros'>
-                    Erro, nenhum filme encontrado
+                    {erro}
                 </div> 
             
             : 
