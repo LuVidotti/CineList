@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/CineList/static/css/main.729ca5b3.css",
+    "main.js": "/CineList/static/js/main.3ad9ea9c.js",
+    "static/css/556.acfda3ac.chunk.css": "/CineList/static/css/556.acfda3ac.chunk.css",
+    "static/js/556.294ced7c.chunk.js": "/CineList/static/js/556.294ced7c.chunk.js",
+    "index.html": "/CineList/index.html",
+    "main.729ca5b3.css.map": "/CineList/static/css/main.729ca5b3.css.map",
+    "main.3ad9ea9c.js.map": "/CineList/static/js/main.3ad9ea9c.js.map",
+    "556.acfda3ac.chunk.css.map": "/CineList/static/css/556.acfda3ac.chunk.css.map",
+    "556.294ced7c.chunk.js.map": "/CineList/static/js/556.294ced7c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.729ca5b3.css",
+    "static/js/main.3ad9ea9c.js"
+  ]
+}
